@@ -29,6 +29,10 @@ The application accepts resumes in **PDF or DOCX format**, processes the text us
 
 Below is a screenshot of the working application showing resume upload, job description input, and match result.
 
+Direct link :
+
+https://ai-resume-system.netlify.app/
+
 Screenshot:
 
 ### Home Page
