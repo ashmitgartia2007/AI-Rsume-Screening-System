@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Resume Screening & Job Matching System. Upload your resume and get instant match percentages based on natural language processing.">
+    <title>AI Resume Screening System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Dynamic Background Elements -->
+<div class="bg-shape bg-shape-1"></div>
+<div class="bg-shape bg-shape-2"></div>
+<div class="bg-shape bg-shape-3"></div>
+
+<main class="container">
+    <header>
+        <h1><i class="fa-solid fa-robot"></i> AI Resume Screener</h1>
+        <p class="subtitle">Upload a resume and compare it with a job description to instantly get an AI-powered match score.</p>
+    </header>
+
+    <form action="/match" method="post" enctype="multipart/form-data" class="main-form">
+
+        <div class="input-group file-upload-wrapper">
+            <label class="label" for="resume"><i class="fa-solid fa-file-arrow-up"></i> Upload Resume (PDF / DOCX)</label>
+            <div class="file-upload-box" id="drop-zone">
+                <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                <span id="file-name" class="file-name">Drag & drop or Click to browse</span>
+                <input type="file" name="resume" id="resume" accept=".pdf,.doc,.docx" required>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label class="label" for="job_description"><i class="fa-solid fa-briefcase"></i> Job Description</label>
+            <textarea name="job_description" id="job_description"
+                      placeholder="Paste the complete job description here to analyze..."
+                      required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <span>Analyze Match</span> <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </button>
+    </form>
+
+    {% if score is defined %}
+    <div class="result glass-panel slide-up">
+        <h2>Analysis Complete</h2>
+        
+        <div class="score-ring-container">
+            <svg class="score-ring" viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="45" 
+                        style="--score: {{ score }}; stroke: var(--status-color-{{ category|lower|replace(' ', '-') }})"></circle>
+            </svg>
+            <div class="score-text" style="color: var(--status-color-{{ category|lower|replace(' ', '-') }})">{{ score }}%</div>
+        </div>
+
+        <div class="category-badge {{ category|lower|replace(' ', '-') }}">
+            {{ category }}
+        </div>
+    </div>
+    {% endif %}
+</main>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('resume');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    // Handle file selection
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            fileNameDisplay.textContent = e.target.files[0].name;
+            dropZone.classList.add('has-file');
+        } else {
+            fileNameDisplay.textContent = 'Drag & drop or Click to browse';
+            dropZone.classList.remove('has-file');
+        }
+    });
+
+    // Drag and drop effects
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            fileNameDisplay.textContent = e.dataTransfer.files[0].name;
+            dropZone.classList.add('has-file');
+        }
+    });
+
+    // Scroll to results if they are present
+    const categoryBadge = document.querySelector('.category-badge');
+    if (categoryBadge) {
+        setTimeout(() => {
+            categoryBadge.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 100);
+    }
+</script>
+</body>
+</html>
