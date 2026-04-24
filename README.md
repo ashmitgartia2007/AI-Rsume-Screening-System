@@ -71,20 +71,6 @@ All required libraries are listed in `requirements.txt`, including:
 - python-docx
 
 
-## Project Structure
-
-AI_Resume_Screener/
-- app.py
-- matcher.py
-- resume_parser.py
-- requirements.txt
-- templates/
-  - index.html
-- static/
-  - style.css
-- readme.md
-
-
 ## Use Cases
 
 - Resume screening for recruiters and HR teams  
