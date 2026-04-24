@@ -31,7 +31,7 @@ Below is a screenshot of the working application showing resume upload, job desc
 
 Direct link :
 
-https://ai-resume-system.netlify.app/
+https://ai-resume-system.netlify.app
 
 Screenshot:
 
